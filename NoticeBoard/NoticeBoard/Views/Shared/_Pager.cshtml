@@ -1,0 +1,70 @@
+﻿@using System.Text.RegularExpressions
+
+@model NoticeBoard.Models.Pagination
+@{
+    IList<int> pageItems = new List<int>();
+    for (int i = 1; i <= Model.PageCount; i++)
+    {
+        if (i != 1 && i != Model.PageCount && (Math.Abs(i - Model.CurrentPage) > 2)) //如果与当前页相隔超过2个页码且不为首页末页，则不显示
+        {
+            continue;
+        }
+        pageItems.Add(i);
+
+    }
+}
+<div class="clearfix ta-r">
+    <ul class="pagination">
+        <li style="float: left; display: inline-block;padding:6px 12px;">共 @Model.RowCount 个</li>
+        @{
+            var url = HttpContext.Current.Request.Url.ToString().ToLower();
+            var pattern = @"(page=\d+(?:\&)?)";
+            if (Regex.IsMatch(url, pattern))
+            {
+                url = Regex.Replace(url, pattern, string.Empty);
+            }
+
+            url = url.TrimEnd('#', '&', '?', '/');
+            string connector = url.Contains('?') ? "&" : "?";
+
+            string prePageClass = Model.CurrentPage > 1 ? "prev" : "prev disabled";
+            string prePageUrl = Model.CurrentPage > 1 ? string.Format("{0}{2}page={1}", url, Model.CurrentPage - 1, connector) : "javascript:;";
+            string nextPageClass = Model.CurrentPage + 1 <= Model.PageCount ? "next" : "next disabled";
+            string nextPageUrl = Model.CurrentPage + 1 <= Model.PageCount ? string.Format("{0}{2}page={1}", url, Model.CurrentPage + 1, connector) : "javascript:;";
+
+
+            string firstPageClass = Model.CurrentPage == 1 ? "first disabled" : "first";
+            string firstPageUrl = Model.CurrentPage == 1 ? "javascript:;" : string.Format("{0}{2}page={1}", url, 1, connector);
+
+
+            string lastPageClass = Model.CurrentPage == Model.PageCount ? "last disabled" : "last";
+            string lastPageUrl = Model.CurrentPage == Model.PageCount ? "javascript:;" : string.Format("{0}{2}page={1}", url, Model.PageCount, connector);
+
+            <li class="@firstPageClass"><a href="@firstPageUrl">首页</a></li>
+            <li class="@prePageClass"><a href="@prePageUrl"><i class="arrow arrow2"></i>上一页</a></li>
+
+            int lastPage = 0;
+            foreach (int pi in pageItems)
+            {
+                if (pi - lastPage > 1)
+                {
+                    <li class="page disabled"><a href="javascript:;">...</a></li>
+                }
+                if (pi == Model.CurrentPage)
+                {
+
+                    <li class="page active"><a href="javascript:;">@pi</a></li>
+                }
+                else
+                {
+                    string pageUrl = string.Format("{0}{2}page={1}", url, pi, connector);
+                    <li><a href="@pageUrl">@pi</a></li>
+                }
+
+                lastPage = pi;
+            }
+            <li class="@nextPageClass"><a href="@nextPageUrl">下一页<i class="arrow arrow3"></i></a></li>
+            <li class="@lastPageClass"><a href="@lastPageUrl">末页</a></li>
+        }
+    </ul>
+</div>
