@@ -18,11 +18,13 @@ namespace NoticeBoard.Filters
             if (filterContext.HttpContext.Session["openid"] == null)
             {
 #if DEBUG
+                
                 filterContext.HttpContext.Session["openid"] = "12##o0XAsuEVAajjMPEnRByelvMX6Qus";
                 filterContext.HttpContext.Session["nick"] = "鱼汤";
 #else
+                var appId = ConfigurationManager.AppSettings["AppId"].ToString();
                 var request = filterContext.Controller.ControllerContext.RequestContext.HttpContext.Request;
-                filterContext.Result = new RedirectResult("/client/Account/Authorize?appId=" + dealer.AppId + "&returnUrl=" + request.Url.PathAndQuery);
+                filterContext.Result = new RedirectResult("/Account/Authorize?appId=" + appId + "&returnUrl=" + request.Url.PathAndQuery);
 #endif
 
             }

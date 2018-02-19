@@ -1,0 +1,35 @@
+﻿@model NoticeSource
+@using NoticeBoard.Models
+@{
+    ViewBag.Title = "CreateSource";
+}
+
+<h2>CreateSource</h2>
+
+
+<form action="@Url.Action("SaveSource")" method="post">
+    @Html.HiddenFor(m=>m.Id)
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" name="Name" value="@Model.Name" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+        <label>Domain</label>
+        <input type="text" class="form-control" name="Domain" value="@Model.Domain" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+        <label>NoticePath</label>
+        <input type="text" class="form-control" name="NoticePath" value="@Model.NoticePath" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+        <label>RegexRule</label>
+        <input type="text" class="form-control" name="RegexRule" value="@Model.RegexRule" autocomplete="off" required>
+    </div>
+    <br />
+    <div style="text-align:right">
+        <button type="submit" class="btn btn-warning btn-orange fa fa-search"> 提交</button>
+
+        @Html.ActionLink("返回","Sources")
+    </div>
+</form>
+

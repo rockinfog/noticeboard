@@ -1,0 +1,46 @@
+﻿@model IList<NoticeSource>
+    @using System.Web
+@using NoticeBoard.Models
+    @{
+        ViewBag.Title = "Sources";
+    }
+
+    <h2>Sources</h2>
+
+<div style="text-align:right">
+
+    @Html.ActionLink("新增", "CreateSource")
+</div>
+<table class="table-bordered table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Domain</th>
+            <th>NoticePath</th>
+            <th>RegexRule</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var source in Model)
+        {
+            <tr>
+                <td>@source.Name</td>
+                <td>@source.Domain</td>
+                <td>@source.NoticePath</td>
+                <td>@HttpUtility.HtmlDecode(source.RegexRule)</td>
+                <td>
+                    @Html.ActionLink("编辑","EditSource",new { Id= source.Id})
+                    @using (Html.BeginForm("DeleteSource", "Home", FormMethod.Post, new { @class = "className" }))
+                    {
+                        @Html.Hidden("Id",source.Id)
+                        <input type="submit" value="删除" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+

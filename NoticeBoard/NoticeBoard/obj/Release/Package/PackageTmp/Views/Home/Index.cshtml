@@ -1,0 +1,34 @@
+﻿@model PagedList<Notice>
+@using NoticeBoard.Models
+@{
+    ViewBag.Title = "Notices";
+}
+
+<h2>Notices</h2>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Source</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var notice in Model.Results)
+        {
+            <tr>
+                <td>
+                    <a href="@notice.Link">@notice.Title</a>
+                </td>
+                <td>@notice.CreateDate.ToString("yyyy-MM-dd")</td>
+                <td>@notice.Source</td>
+            </tr>
+        } 
+    </tbody>
+
+</table>
+
+@Html.Partial("_Pager", Model.Pagination)

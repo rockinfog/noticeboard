@@ -37,7 +37,7 @@ namespace NoticeBoard.Controllers
 
         public ActionResult Authorize(string appId,string returnUrl)
         {
-            string redirectUrl = Url.Encode(string.Format("/Account/GetCode?appId={0}returnUrl={1}",appId,returnUrl));
+            string redirectUrl = Url.Encode(string.Format("{0}/Account/GetCode?appId={1}returnUrl={2}", _domain, appId,returnUrl));
             string url = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect", appId, redirectUrl);
             return Redirect(url);
         }
